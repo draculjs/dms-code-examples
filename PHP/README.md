@@ -25,8 +25,8 @@ Las carpetas contenidas en el codigo son:
 ## Tests
 
 Existen tests para los tres servicios que ofrece DMS:
-- testGetFileById()
-- testGetFile()
-- testPostFile()
+- testGUZZLEgetById()
+- testGUZZLEgetFiles()
+- testGUZZLEpostFile()
 
-Los tests corren con JUnit.
+Los tests corren con PHPUnit.
