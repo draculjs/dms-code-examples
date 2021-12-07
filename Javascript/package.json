@@ -1,5 +1,8 @@
 {
     "scripts": {
-    "test": "jest --runInBand"
-  }
+        "test": "jest --runInBand"
+    },
+    "dependencies": {
+        "jest": "^27.4.3"
+    }
 }
