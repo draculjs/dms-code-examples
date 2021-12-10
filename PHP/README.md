@@ -13,8 +13,9 @@ Para correr los tests, es necesario descargar las librerías de PHPUnit.
 ## Funciones
 
 Las funciones que se dejan de ejemplo son:
-- CallAPIcurl(): Archivo "CURL-ApiExample.php".La misma se utiliza para usar todos los servicios de DMS a traves de CURL, pasando los parametros corresponientes.
-- CallAPIguzzle(): Archivo "GUZZLE-ApiExample.php".La misma se utiliza para usar todos los servicios de DMS a traves de GUZZLE, pasando los parametros corresponientes.
+- getFiles(): Archivo "getFiles.GUZZLE.php" y "getFiles.CURL.php". La misma se utiliza para obtener todos los archivos que se encuentran subidos a la plataforma (por default solo devuelve los ultimos 5).
+- getFileById(): Archivo "getFileById.GUZZLE.php" y "getFileById.CURL.php". La misma se utiliza para obtener un archivo especifico pasando como parametro su Id.
+- uploadFile(): Archivo "uploadFile.GUZZLE.php" y "uploadFile.CURL.php". La misma se utiliza para subir un archivo a la plataforma.
 
 ## Carpetas
 
@@ -25,8 +26,8 @@ Las carpetas contenidas en el codigo son:
 ## Tests
 
 Existen tests para los tres servicios que ofrece DMS:
-- testGUZZLEgetById()
-- testGUZZLEgetFiles()
-- testGUZZLEpostFile()
+- getFiles()
+- getFileById()
+- uploadFile()
 
 Los tests corren con PHPUnit.
