@@ -1,48 +1,44 @@
 <?php
 
-require __DIR__ . './../GUZZLE-ApiExample.php';
+require __DIR__ . './../getFileById.GUZZLE.php';
+require __DIR__ . './../getFiles.GUZZLE.php';
+require __DIR__ . './../uploadFile.GUZZLE.php';
 class GUZZLEtest extends \PHPUnit\Framework\TestCase
 {
     //PARA TODOS LOS TEST SE DEBE TENER CONFIGURADO DE ALGUNA FORMA EL TOKEN DE AUORIZACION EN LA FUNCION DE PRUEBA(CallAPIguzzle())
-    public function testGUZZLEgetFiles_1()
+    public function testgetFiles()
     {
-        $response = CallAPIguzzle("GET", "http://192.168.10.33:7070/api/file");
+        $response = getFiles("http://192.168.10.33:7070/api/file");
         $this->assertGreaterThanOrEqual(0,json_decode($response->getBody())->totalItems);  
 
     }
-    public function testGUZZLEgetFiles_2()
+    public function testgetFilesNoURL()
     {
-        $response = CallAPIguzzle("", "http://192.168.10.33:7070/api/file");
-        $this->assertGreaterThanOrEqual(0,json_decode($response->getBody())->totalItems); 
-
-    }
-    public function testGUZZLEgetFiles_3()
-    {
-        $response = CallAPIguzzle("GET",null);
+        $response = getFiles(null);
         $this->assertEquals("URL no definida", $response);  
 
     }
-    public function testGUZZLEpostFile_1()
+    public function testuploadFileNoFilepath()
     {
-        $response = CallAPIguzzle("POST", "http://192.168.10.33:7070/api/file");
+        $response = uploadFile("http://192.168.10.33:7070/api/file", null);
         $this->assertEquals("ERROR: filePath Requerido para subir archivos", $response);  
 
     }
-    public function testGUZZLEpostFile_2()
+    public function testpostFile()
     {
-        $response = CallAPIguzzle("POST", "http://192.168.10.33:7070/api/file",null,null,'./exampleFiles/hola.txt');
+        $response = uploadFile("http://192.168.10.33:7070/api/file",'./exampleFiles/hola.txt');
         $this->assertEquals(".txt",json_decode($response->getBody())->extension);  
         $this->assertEquals(201,$response->getStatusCode());  
 
     }
-    public function testGUZZLEgetById_1()
+    public function testgetFileByIdNotFound()
     {
-        $response = CallAPIguzzle("GET", "http://192.168.10.33:7070/api/file/", "618aabf8fcce23001007d848");
+        $response = getFileById("http://192.168.10.33:7070/api/file/", "618aabf8fcce23001007d848");
         $this->assertEquals(404, $response->getCode());  
 
-    }public function testGUZZLEgetById_2()
+    }public function testgetFileByIdBadId()
     {
-        $response = CallAPIguzzle("GET", "http://192.168.10.33:7070/api/file/", "cualquiercosa");
+        $response = getFileById("http://192.168.10.33:7070/api/file/", "618aabf8fccej3001007d849");
         $this->assertEquals(500, $response->getCode());  
 
     }
