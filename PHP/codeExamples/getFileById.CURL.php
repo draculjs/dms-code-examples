@@ -13,7 +13,7 @@
  */
 
 
-function getFileById($url, $id)
+function getFile($url, $id)
 {
     if (!$url) return "URL no definida";
 
@@ -38,4 +38,4 @@ function getFileById($url, $id)
 };
 
 //Llamada de ejemplo
-// getFileById("http://192.168.10.33:7070/api/file", "61954ca5fcce23001007da16");
+// getFile("http://192.168.10.33:7070/api/file", "61954ca5fcce23001007da16");

@@ -11,7 +11,7 @@ También es necesario completar las variables de entorno que es encuentran en **
 ## Tests
 
 Existen tests para los tres servicios que ofrece DMS:
-- testGetFileById()
+- testgetFile()
 - testGetFile()
 - testPostFile()
 

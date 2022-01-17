@@ -14,7 +14,7 @@ Para correr los tests, es necesario descargar las librerías de PHPUnit.
 
 Las funciones que se dejan de ejemplo son:
 - getFiles(): Archivo "getFiles.GUZZLE.php" y "getFiles.CURL.php". La misma se utiliza para obtener todos los archivos que se encuentran subidos a la plataforma (por default solo devuelve los ultimos 5).
-- getFileById(): Archivo "getFileById.GUZZLE.php" y "getFileById.CURL.php". La misma se utiliza para obtener un archivo especifico pasando como parametro su Id.
+- getFile(): Archivo "getFile.GUZZLE.php" y "getFile.CURL.php". La misma se utiliza para obtener un archivo especifico pasando como parametro su Id.
 - uploadFile(): Archivo "uploadFile.GUZZLE.php" y "uploadFile.CURL.php". La misma se utiliza para subir un archivo a la plataforma.
 
 ## Carpetas
@@ -27,7 +27,7 @@ Las carpetas contenidas en el codigo son:
 
 Existen tests para los tres servicios que ofrece DMS:
 - getFiles()
-- getFileById()
+- getFile()
 - uploadFile()
 
 Los tests corren con PHPUnit.

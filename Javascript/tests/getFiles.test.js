@@ -18,7 +18,7 @@ describe("Tests API dracul media code example ", () => {
       expect (file).toEqual({errorMessage: 'undefined host, port or path.'})
   }, 2000) 
 
-  /* test('getFileById', async () => {
+  /* test('getFile', async () => {
     let file = await callAPI('GET', '192.168.10.33', 7070, '/api/file', '618aabf8fcce23001007d843')
     expect (file).toEqual({})
   }, 2000)
