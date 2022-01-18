@@ -6,8 +6,13 @@ import ar.org.dracul.dto.FileParamsDTO;
 import ar.org.dracul.exception.FileException;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,20 +64,27 @@ public class FileService extends GenericService {
         return fileDTO;
     }
     
-    public FileDTO createFile(Resource resource) throws FileException {
+    public FileDTO createFile(String filePath) throws FileException {
     	
         FileDTO fileOutputDTO = null;
         try {
             String url = DRACUL_MEDIA_ENDPOINT + "/file";
             
+            Resource file = getFileFromPath(filePath);
+            
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        	body.add("file", resource);
+        	body.add("file", file);
         	        	
             fileOutputDTO = initRequest(commonUtil.getHeadersPost(token)).post(url, body, FileDTO.class, null);
         } catch (Exception e) {
             throw new FileException(e.getMessage());
         }
         return fileOutputDTO;
+    }
+    
+    private Resource getFileFromPath(String filePath) throws IOException {
+        Path path = Paths.get(filePath);
+        return new FileSystemResource(path.toFile());
     }
 
 }
