@@ -56,19 +56,11 @@ public class FileServiceTests {
 	
 	@Test
 	public void testPostFile() throws FileException, IOException {
-	
-		Resource file = getTestFile();
 		
-		FileDTO fileOutputDTO  = fileService.createFile(file);
+		FileDTO fileOutputDTO  = fileService.createFile("src/main/resources/HelloWorld.txt");
 		
 		assertTrue(fileOutputDTO.exists());
 		
 	}
-	
-	 private static Resource getTestFile() throws IOException {
-        Path testFile = Files.createTempFile("test-file", ".txt");
-        Files.write(testFile, "Hello World !".getBytes());
-        return new FileSystemResource(testFile.toFile());
-    }
 
 }
