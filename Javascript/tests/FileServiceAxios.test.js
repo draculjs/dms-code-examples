@@ -1,5 +1,5 @@
 require('dotenv').config()
-const FileService = require('../FileService')
+const FileService = require('../FileServiceAxios')
 
 describe("Tests API dracul media code example ", () => {
   let fileService = new FileService('http://192.168.10.33:7070/api/file', process.env.TOKEN)
@@ -22,11 +22,12 @@ describe("Tests API dracul media code example ", () => {
   
   test('getFile with wrong id', async () => {
     try {
-      let file = await fileService.getFile('618aabf8001007d843')
+      let file = await fileService.getFile('618aabf80010d843')
     } catch (error) {
       expect(error.message).toEqual('id must be of type ObjectId')
     }
   }, 2000)
+  
   
   test('createFile without filePath', async () => {
     try {
@@ -76,6 +77,6 @@ describe("Tests API dracul media code example ", () => {
     } catch (error) {
       throw new Error(error.message)
     }
-  }, 2000)
+  }, 6000)
 
 })
