@@ -28,6 +28,8 @@ class FileService {
   */
   getFiles(params) {
     return new Promise((resolve, reject) => {
+      if (params && typeof params != 'object') return reject(new Error('Params must be a Object'))
+
       const newUrl = new URL(this.url)
       const queryParams = querystring.stringify(params)
 
