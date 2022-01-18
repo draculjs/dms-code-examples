@@ -1,44 +1,72 @@
 <?php
 
-require __DIR__ . './../getFileById.GUZZLE.php';
-require __DIR__ . './../getFiles.GUZZLE.php';
-require __DIR__ . './../uploadFile.GUZZLE.php';
+require __DIR__  . "./../FileService.php";
+require __DIR__ . "./../FilePaginateDTO.php";
+require __DIR__ . "./../FileDTO.php";
+
+
 class GUZZLEtest extends \PHPUnit\Framework\TestCase
 {
+    private $url = "http://192.168.10.33:7070/api/file/";
+    private $token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMjNjZjBhZDExM2E3MDAxMWQxNzI1OSIsInVzZXJuYW1lIjoicm9vdCIsInJvbGUiOnsiaWQiOiI2MTIzY2YwYWQxMTNhNzAwMTFkMTcyNDUiLCJuYW1lIjoiYWRtaW4iLCJjaGlsZFJvbGVzIjpudWxsfSwiZ3JvdXBzIjpbXSwiaWRTZXNzaW9uIjoiNjFlNTgyYzY1MTVmNmUwMDEwZjBlNDgxIiwiaWF0IjoxNjQyNDMxMTc1LCJleHAiOjE2NDI1MTc1NzUsImp0aSI6IjYxMjNjZjBhZDExM2E3MDAxMWQxNzI1OSJ9.gl9h9S0hnHP7Nl6sYaC6ha2TPx25azCPAGkfuLC-6Mo";
+    private $service;
+
     //PARA TODOS LOS TEST SE DEBE TENER CONFIGURADO DE ALGUNA FORMA EL TOKEN DE AUORIZACION EN LA FUNCION DE PRUEBA(CallAPIguzzle())
     public function testgetFiles()
     {
-        $response = getFiles("http://192.168.10.33:7070/api/file");
-        $this->assertGreaterThanOrEqual(0,json_decode($response->getBody())->totalItems);  
+        $this->service = new FileService($this->token, $this->url);
+        $response = $this->service->getFiles();
+        $FilesRaw = json_decode($response->getBody());
+
+        $Files = new FilePaginateDTO();
+        $Files->setItems($FilesRaw->items);
+        $Files->setTotalItems($FilesRaw->totalItems);
+        $Files->setPage($FilesRaw->page);
+        
+        $this->assertGreaterThanOrEqual(0,$Files->totalItems);  
 
     }
-    public function testgetFilesNoURL()
+    public function testcreateFileNoFilepath()
     {
-        $response = getFiles(null);
-        $this->assertEquals("URL no definida", $response);  
-
-    }
-    public function testuploadFileNoFilepath()
-    {
-        $response = uploadFile("http://192.168.10.33:7070/api/file", null);
-        $this->assertEquals("ERROR: filePath Requerido para subir archivos", $response);  
+        $this->service = new FileService($this->token, $this->url);
+        $this->expectExceptionMessage("filePath no definido");
+        $this->service->createFile(null);
 
     }
     public function testpostFile()
     {
-        $response = uploadFile("http://192.168.10.33:7070/api/file",'./exampleFiles/hola.txt');
-        $this->assertEquals(".txt",json_decode($response->getBody())->extension);  
+        $this->service = new FileService($this->token, $this->url);
+        $response = $this->service->createFile('./exampleFiles/hola.txt');
+        $FileRaw = json_decode($response->getBody());
+
+        $File = new FileDTO();
+        $File->setExtension($FileRaw->extension);
+        $this->assertEquals(".txt",$File->getExtension());  
         $this->assertEquals(201,$response->getStatusCode());  
 
     }
-    public function testgetFileByIdNotFound()
+    public function testgetFileNotFound()
     {
-        $response = getFileById("http://192.168.10.33:7070/api/file/", "618aabf8fcce23001007d848");
+        $this->service = new FileService($this->token, $this->url);
+        $response = $this->service->getFile("618aabf8fcce23001007d848");
         $this->assertEquals(404, $response->getCode());  
 
-    }public function testgetFileByIdBadId()
+    }
+    public function testgetFile()
     {
-        $response = getFileById("http://192.168.10.33:7070/api/file/", "618aabf8fccej3001007d849");
+        $this->service = new FileService($this->token, $this->url);
+        $response = $this->service->getFile("618aabf8fcce23001007d843");
+        $FileRaw = json_decode($response->getBody());
+
+        $File = new FileDTO();
+        $File->set_id($FileRaw->_id);
+        $this->assertEquals("618aabf8fcce23001007d843", $File->get_id());  
+
+    }
+    public function testgetFileBadId()
+    {
+        $this->service = new FileService($this->token, $this->url);
+        $response = $this->service->getFile("618aabf8fccej3001007d849");
         $this->assertEquals(500, $response->getCode());  
 
     }
