@@ -3,6 +3,7 @@
         "test": "jest --runInBand"
     },
     "dependencies": {
+        "dotenv": "^14.1.0",
         "jest": "^27.4.3"
     }
 }
