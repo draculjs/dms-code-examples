@@ -30,7 +30,7 @@ public class FileServiceTests {
 	private FileService fileService;
 	
 	@Test
-	public void testGetFileById() throws FileException {
+	public void testgetFile() throws FileException {
 		
 		FileDTO fileDto = fileService.getFile("618aabf8fcce23001007d843");
 		
