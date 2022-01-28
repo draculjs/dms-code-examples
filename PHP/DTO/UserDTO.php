@@ -1,23 +1,31 @@
 <?php
 
-use phpDocumentor\Reflection\Types\Boolean;
+
 
 class UserDTO {
 
     private String $_id;
     private String $id;
-    private Boolean $active;
+    private Bool $active;
     private String $username;
     private String $email;
     private Array $groups;
     private String $password;
     private String $name;
     private String $role;
-    private DateTime $createdAt;
-    private DateTime $updatedAt;
-    private Boolean $deleted;
-    private DateTime $deletedAt;
+    private String $createdAt;
+    private String $updatedAt;
+    private Bool $deleted;
+    private String $deletedAt="";
     private Int $__v;
+
+    function __construct(stdClass $data) {
+        foreach($data as $key => $val) {
+            if(property_exists(__CLASS__,$key) && $val) {
+                $this->$key = $val;
+            }
+        }
+    }
 
     public function get_Id() {
         return $this->_id;
