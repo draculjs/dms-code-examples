@@ -1,14 +1,15 @@
 <?php
 
 require __DIR__  . "./../FileService.php";
-require __DIR__ . "./../FilePaginateDTO.php";
-require __DIR__ . "./../FileDTO.php";
+require __DIR__ . "./../DTO/CreatedByDTO.php";
+require __DIR__ . "./../DTO/FileDTO.php";
+require __DIR__ . "./../DTO/FilePaginateDTO.php";
 
 
 class GUZZLEtest extends \PHPUnit\Framework\TestCase
 {
     private $url = "http://192.168.10.33:7070/api/file/";
-    private $token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMjNjZjBhZDExM2E3MDAxMWQxNzI1OSIsInVzZXJuYW1lIjoicm9vdCIsInJvbGUiOnsiaWQiOiI2MTIzY2YwYWQxMTNhNzAwMTFkMTcyNDUiLCJuYW1lIjoiYWRtaW4iLCJjaGlsZFJvbGVzIjpudWxsfSwiZ3JvdXBzIjpbXSwiaWRTZXNzaW9uIjoiNjFlNTgyYzY1MTVmNmUwMDEwZjBlNDgxIiwiaWF0IjoxNjQyNDMxMTc1LCJleHAiOjE2NDI1MTc1NzUsImp0aSI6IjYxMjNjZjBhZDExM2E3MDAxMWQxNzI1OSJ9.gl9h9S0hnHP7Nl6sYaC6ha2TPx25azCPAGkfuLC-6Mo";
+    private $token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMjNjZjBhZDExM2E3MDAxMWQxNzI1OSIsInVzZXJuYW1lIjoicm9vdCIsInJvbGUiOnsiaWQiOiI2MTIzY2YwYWQxMTNhNzAwMTFkMTcyNDUiLCJuYW1lIjoiYWRtaW4iLCJjaGlsZFJvbGVzIjpudWxsfSwiZ3JvdXBzIjpbXSwiaWRTZXNzaW9uIjoiNjFmM2VjNTg1YmFiY2UwMDExM2Y5Y2RjIiwiaWF0IjoxNjQzMzc1NzA0LCJleHAiOjE2NDM0NjIxMDQsImp0aSI6IjYxMjNjZjBhZDExM2E3MDAxMWQxNzI1OSJ9.zaPfdMNZEu5QFOwAmSnANZSJX-fhQ5wWMwesYWYlDlw";
     private $service;
 
     //PARA TODOS LOS TEST SE DEBE TENER CONFIGURADO DE ALGUNA FORMA EL TOKEN DE AUORIZACION EN LA FUNCION DE PRUEBA(CallAPIguzzle())
@@ -16,14 +17,11 @@ class GUZZLEtest extends \PHPUnit\Framework\TestCase
     {
         $this->service = new FileService($this->token, $this->url);
         $response = $this->service->getFiles();
-        $FilesRaw = json_decode($response->getBody());
+        $FilesRaw = $response;
 
-        $Files = new FilePaginateDTO();
-        $Files->setItems($FilesRaw->items);
-        $Files->setTotalItems($FilesRaw->totalItems);
-        $Files->setPage($FilesRaw->page);
+        $Files = new FilePaginateDTO($FilesRaw);
         
-        $this->assertGreaterThanOrEqual(0,$Files->totalItems);  
+        $this->assertEquals("root",$Files->getItems()[0]->getCreatedBy()->getUsername());  
 
     }
     public function testcreateFileNoFilepath()
@@ -37,12 +35,10 @@ class GUZZLEtest extends \PHPUnit\Framework\TestCase
     {
         $this->service = new FileService($this->token, $this->url);
         $response = $this->service->createFile('./exampleFiles/hola.txt');
-        $FileRaw = json_decode($response->getBody());
+        $FileRaw = $response;
 
-        $File = new FileDTO();
-        $File->setExtension($FileRaw->extension);
-        $this->assertEquals(".txt",$File->getExtension());  
-        $this->assertEquals(201,$response->getStatusCode());  
+        $File = new FileDTO($FileRaw);
+        $this->assertEquals("root",$File->getCreatedBy()->getUsername());  
 
     }
     public function testgetFileNotFound()
@@ -56,11 +52,10 @@ class GUZZLEtest extends \PHPUnit\Framework\TestCase
     {
         $this->service = new FileService($this->token, $this->url);
         $response = $this->service->getFile("618aabf8fcce23001007d843");
-        $FileRaw = json_decode($response->getBody());
+        $FileRaw = $response;
 
-        $File = new FileDTO();
-        $File->set_id($FileRaw->_id);
-        $this->assertEquals("618aabf8fcce23001007d843", $File->get_id());  
+        $File = new FileDTO($FileRaw);
+        $this->assertEquals("618aabf8fcce23001007d843", $File->getId());  
 
     }
     public function testgetFileBadId()

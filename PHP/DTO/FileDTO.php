@@ -13,16 +13,28 @@ class FileDTO {
     private String $absolutePath;
     private Float $size;
     private String $url;
-    private DateTime $lastAccess;
-    private DateTime $createdAt;
-    private DateTime $deletedAt;
+    private String $lastAccess;
+    private String $createdAt;
+    private String $deletedAt;
     private Int $__v;
+
+    function __construct(stdClass $data) {
+        foreach($data as $key => $val) {
+            if(property_exists(__CLASS__,$key)) {
+                if($key == "createdBy"){
+                    $this->createdBy = new CreatedByDTO($val);
+                }else{
+                    $this->$key = $val;
+                }
+            }
+        }
+    }
 
     public function getCreatedBy() {
         return $this->createdBy;
     }
 
-    public function setCreatedBy($createdBy) {
+    public function setCreatedBy(CreatedByDTO $createdBy) {
         $this->createdBy = $createdBy;
     }
 
@@ -34,11 +46,11 @@ class FileDTO {
         $this->tags = $tags;
     }
 
-    public function get_id() {
+    public function getId() {
         return $this->_id;
     }
 
-    public function set_id($_id) {
+    public function setId($_id) {
         $this->_id = $_id;
     }
 
@@ -139,7 +151,7 @@ class FileDTO {
     }
 
 	public function exists() {		
-		return $this->get_id() != null;
+		return $this->getId() != null;
 	}
 
 }

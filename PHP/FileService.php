@@ -40,15 +40,15 @@ class FileService
 
         try {
             $response = $client->request("GET", $id, $data);
+            $responseBody = json_decode($response->getBody());
         } catch (\Throwable $th) {
             return $th;
         }
-
         // $response->getStatusCode() ;
         // "200"
         // $response->getBody();
         // {"type":"User"...'
-        return $response;
+        return $responseBody;
     }
     //Llamada de ejemplo
     //getFile("http://192.168.10.33:7070/api/file/",token, "61a67ec1730e6565a60cb7e6");
@@ -85,6 +85,7 @@ class FileService
         try {
             //code...
             $response = $client->request("GET",'',$data);
+            $responseBody = json_decode($response->getBody());
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -94,7 +95,7 @@ class FileService
         //$response->getBody();
         // {"type":"User"...'
 
-        return $response;
+        return $responseBody;
     }
     //Llamada de ejemplo
     //getFiles("http://192.168.10.33:7070/api/file/",token, array('pageNumber' => 1,'itemsPerPage'=> 5,'search'=> 'nombreImagen','orderBy'=> 'campoDeBaseDeDatos','orderDesc'=> null));
@@ -134,11 +135,12 @@ class FileService
         try {
             //code...
             $response = $client->request("POST",'',$data);
+            $responseBody = json_decode($response->getBody());
         } catch (\Throwable $th) {
             throw $th;
         }
         
-        return $response;
+        return $responseBody;
     }
     //Llamada de ejemplo
     //uploadFile("http://192.168.10.33:7070/api/file/",token,"./exampleFiles/Screenshot.png");
